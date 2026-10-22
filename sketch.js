@@ -85,6 +85,9 @@ function drawCanvasText(value, x, y, size, color, font = 'Arial, "Noto Sans TC",
   const context = drawingContext; // 取得 p5.js 畫布的 2D 繪圖環境。
   context.save(); // 暫存現有畫布狀態避免影響其他繪圖。
   context.font = `${size}px ${font}`; // 指定字體大小與字型。
+  const textWidth = context.measureText(value).width; // 計算文字實際寬度以避免超出畫布。
+  const maxTextWidth = width - 48; // 保留左右邊界，確保文字完整顯示。
+  if (textWidth > maxTextWidth) context.font = `${size * maxTextWidth / textWidth}px ${font}`; // 文字過寬時等比例縮小字體。
   context.fillStyle = color; // 指定文字顏色。
   context.textAlign = 'center'; // 將文字設為水平置中。
   context.textBaseline = 'middle'; // 將文字設為垂直置中。
