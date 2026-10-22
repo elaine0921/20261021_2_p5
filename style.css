@@ -1,0 +1,92 @@
+* { box-sizing: border-box; } /* 統一使用包含內距與框線的尺寸計算方式。 */
+html, body { margin: 0; min-height: 100%; background: #080d18; color: #eef3fc; } /* 設定全頁深色背景與主要文字顏色。 */
+body { font-family: Arial, "Noto Sans TC", sans-serif; } /* 指定支援繁體中文的基本字型。 */
+button, input { font: inherit; } /* 讓按鈕與輸入欄位沿用頁面字型。 */
+button { color: inherit; } /* 讓按鈕文字沿用頁面文字顏色。 */
+[hidden] { display: none !important; } /* 確保未選取的分頁確實隱藏。 */
+.tabs { display: flex; justify-content: center; gap: 8px; width: 100%; padding: 14px 20px 0; border-bottom: 1px solid #253247; background: #0b1220; } /* 建立置中的上方分頁導覽列。 */
+.tab-button { position: relative; min-height: 48px; padding: 0 24px; border: 0; border-radius: 8px 8px 0 0; background: transparent; color: #aab8ce; font-size: 16px; font-weight: 600; cursor: pointer; } /* 設定一般分頁按鈕外觀。 */
+.tab-button:hover { background: #131e30; color: #eef3fc; } /* 滑鼠移入分頁時提高對比。 */
+.tab-button.active { background: #172338; color: #8bd0ff; } /* 強調目前選取的分頁。 */
+.tab-button.active::after { position: absolute; right: 12px; bottom: -1px; left: 12px; height: 3px; border-radius: 3px 3px 0 0; background: #59b8f2; content: ""; } /* 在作用中分頁底部顯示指示線。 */
+.app-main { width: 100%; margin: 0 auto; } /* 設定主要頁面容器寬度。 */
+.tab-panel { width: 100%; } /* 讓分頁內容使用完整可用寬度。 */
+.exam-display { width: 100%; height: min(67vh, 680px); min-height: 420px; overflow: hidden; } /* 設定考試大鐘畫布顯示區域。 */
+.exam-canvas { display: block; width: 100%; height: 100%; } /* 讓 p5.js 畫布填滿時鐘顯示區域。 */
+.panel-controls { max-width: 1120px; margin: 0 auto; padding: 28px 30px 42px; } /* 限制考試資訊表單寬度並置中。 */
+.section-title { margin: 0 0 18px; color: #c9d7ec; font-size: 20px; font-weight: 600; } /* 設定考試資訊與課表標題樣式。 */
+.settings-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; } /* 以三欄排列考試資料欄位。 */
+.field { display: flex; flex-direction: column; gap: 7px; } /* 將標籤與輸入欄位垂直排列。 */
+.field label { color: #aebbd0; font-size: 14px; } /* 設定輸入欄位標籤文字樣式。 */
+.field input { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #334158; border-radius: 7px; background: #111a29; color: #f5f8ff; font-size: 16px; } /* 設定輸入欄位深色外觀。 */
+.field input:focus { outline: 2px solid #78c6ff; outline-offset: 1px; } /* 讓目前輸入欄位有清楚的焦點提示。 */
+.actions { display: flex; justify-content: flex-end; margin-top: 20px; } /* 將全螢幕操作按鈕靠右排列。 */
+.primary-button, .secondary-button { min-height: 46px; padding: 0 22px; border: 0; border-radius: 7px; font-size: 16px; font-weight: 600; cursor: pointer; } /* 設定主要與次要按鈕的共通樣式。 */
+.primary-button { background: #2888c7; color: #fff; } /* 設定主要操作按鈕顏色。 */
+.primary-button:hover { background: #369bdc; } /* 滑鼠移入主要操作按鈕時變亮。 */
+.secondary-button { border: 1px solid #3a4b63; background: #172338; color: #dbe6f5; } /* 設定次要操作按鈕顏色。 */
+.secondary-button:hover { background: #22334d; } /* 滑鼠移入次要按鈕時變亮。 */
+.primary-button:disabled, .secondary-button:disabled { opacity: 0.45; cursor: not-allowed; } /* 明確表示目前無法操作的按鈕。 */
+.feature-panel { max-width: 1120px; min-height: calc(100vh - 76px); margin: 0 auto; padding: 42px 30px 60px; } /* 設定功能頁面的最大寬度與留白。 */
+.feature-title { margin: 0 0 8px; color: #f1f6ff; font-size: 30px; font-weight: 700; } /* 設定上下課鐘與番茄鐘頁面標題。 */
+.feature-description { margin: 0 0 30px; color: #aab8ce; font-size: 16px; line-height: 1.7; } /* 設定功能頁面說明文字。 */
+.bell-buttons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; max-width: 820px; margin: 32px auto 14px; } /* 並排顯示兩個大型上下課鈴按鈕。 */
+.bell-button { min-height: 170px; border: 1px solid #38506c; border-radius: 18px; color: #fff; font-size: clamp(30px, 5vw, 48px); font-weight: 700; letter-spacing: 0.08em; cursor: pointer; transition: filter 140ms ease, transform 140ms ease; } /* 設定大型鈴聲播放按鈕外觀。 */
+.bell-button:hover { filter: brightness(1.14); transform: translateY(-2px); } /* 滑鼠移入鈴聲按鈕時增加亮度並微幅上移。 */
+.bell-button:active { transform: translateY(1px); } /* 按下鈴聲按鈕時顯示按壓回饋。 */
+.start-bell { background: linear-gradient(145deg, #146c84, #144764); } /* 為上課鈴按鈕使用藍綠色調。 */
+.end-bell { background: linear-gradient(145deg, #6753a5, #403768); } /* 為下課鈴按鈕使用紫色調。 */
+.status-message { min-height: 26px; margin: 16px 0 34px; color: #8fcfff; text-align: center; } /* 顯示鈴聲播放與使用狀態。 */
+.schedule-section { margin-top: 22px; padding: 25px; border: 1px solid #26364e; border-radius: 12px; background: #0d1523; } /* 建立深色課表管理面板。 */
+.schedule-form { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) auto; align-items: end; gap: 16px; } /* 將新增課表欄位與按鈕排列於同一列。 */
+.add-schedule-button { min-height: 44px; white-space: nowrap; } /* 讓新增課表按鈕高度與輸入欄位一致。 */
+.schedule-actions { display: flex; align-items: center; justify-content: flex-end; margin: 24px 0 8px; } /* 將自動打鐘開關靠右排列。 */
+.switch-label { display: inline-flex; align-items: center; gap: 12px; color: #e5edf8; font-weight: 600; cursor: pointer; } /* 設定自動打鐘開關標籤。 */
+.switch-input { width: 22px; height: 22px; accent-color: #39a6e0; cursor: pointer; } /* 設定自動打鐘勾選開關大小與色彩。 */
+.schedule-list { display: grid; gap: 9px; } /* 將多節課表以垂直清單排列。 */
+.schedule-row { display: grid; grid-template-columns: 100px 1fr auto; align-items: center; gap: 16px; min-height: 56px; padding: 8px 12px; border: 1px solid #25344a; border-radius: 8px; background: #111a29; } /* 設定單節課表列版面。 */
+.lesson-number { color: #8fcfff; font-weight: 700; } /* 強調課表節次文字。 */
+.lesson-times { color: #e1e9f5; font-variant-numeric: tabular-nums; } /* 讓課表時間使用等寬數字顯示。 */
+.delete-button { min-height: 36px; padding: 0 14px; border: 1px solid #75404a; border-radius: 6px; background: #351d29; color: #ffabb4; cursor: pointer; } /* 設定刪除課表按鈕樣式。 */
+.delete-button:hover { background: #522532; } /* 滑鼠移入刪除按鈕時提高背景亮度。 */
+.empty-message { margin: 12px 0 0; color: #9aa9bf; text-align: center; } /* 設定尚未建立課表時的提示文字。 */
+.pomodoro-panel { text-align: center; } /* 將番茄鐘主要內容置中顯示。 */
+.pomodoro-settings { display: flex; justify-content: center; gap: 22px; margin: 26px auto 34px; } /* 並排顯示專注時間與休息時間設定。 */
+.pomodoro-settings .field { width: min(260px, 42%); text-align: left; } /* 限制番茄鐘時間欄位寬度並靠左對齊標籤。 */
+.pomodoro-phase { margin: 12px 0 4px; color: #8fcfff; font-size: 25px; font-weight: 700; } /* 突顯目前專注或休息階段。 */
+.pomodoro-round { margin: 0; color: #aab8ce; font-size: 17px; } /* 顯示目前番茄鐘輪次。 */
+.pomodoro-countdown { margin: 8px 0 18px; color: #f4f8ff; font-family: Consolas, "Courier New", monospace; font-size: clamp(100px, 24vw, 220px); font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: 0.02em; line-height: 1.15; } /* 顯示大型等寬番茄鐘倒數。 */
+.pomodoro-countdown.break-phase { color: #8be0b2; } /* 休息階段使用柔和綠色倒數文字。 */
+.pomodoro-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 20px; } /* 將番茄鐘操作按鈕置中排列。 */
+.pomodoro-actions button { min-width: 112px; } /* 統一番茄鐘操作按鈕最小寬度。 */
+body.is-fullscreen { overflow: hidden; } /* 全螢幕時隱藏頁面捲軸。 */
+body.is-fullscreen .tabs, body.is-fullscreen .panel-controls { display: none; } /* 全螢幕時僅顯示考試大鐘與資訊。 */
+body.is-fullscreen .exam-display { width: 100vw; height: 100vh; min-height: 0; } /* 全螢幕時讓考試畫布填滿整個視窗。 */
+@media (max-width: 700px) { /* 開始設定平板與窄螢幕版面。 */
+  .tab-button { min-height: 46px; padding: 0 14px; font-size: 14px; } /* 縮小窄螢幕上的分頁按鈕。 */
+  .settings-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } /* 將考試欄位調整為兩欄。 */
+  .panel-controls, .feature-panel { padding-right: 18px; padding-left: 18px; } /* 縮小窄螢幕左右留白。 */
+  .schedule-form { grid-template-columns: repeat(2, minmax(0, 1fr)); } /* 將課表時間欄位調整為兩欄。 */
+  .add-schedule-button { grid-column: 1 / -1; } /* 讓新增課表按鈕占滿整列。 */
+} /* 結束平板與窄螢幕樣式。 */
+@media (max-width: 440px) { /* 開始設定手機窄螢幕版面。 */
+  .tabs { gap: 0; padding-right: 4px; padding-left: 4px; } /* 縮小手機分頁導覽列間距。 */
+  .tab-button { flex: 1; min-height: 48px; padding: 0 4px; font-size: 13px; white-space: nowrap; } /* 讓三個分頁均分手機寬度。 */
+  .exam-display { height: max(420px, 64vh); } /* 為手機考試大鐘保留足夠顯示高度。 */
+  .panel-controls { padding: 22px 18px 34px; } /* 調整手機考試資料表單留白。 */
+  .settings-grid { grid-template-columns: 1fr; } /* 將考試資訊欄位改為單欄。 */
+  .feature-panel { padding-top: 30px; } /* 縮小手機功能頁面上方留白。 */
+  .feature-title { font-size: 26px; } /* 縮小手機功能頁標題。 */
+  .bell-buttons { gap: 12px; margin-top: 24px; } /* 縮小手機鈴聲按鈕間距。 */
+  .bell-button { min-height: 130px; letter-spacing: 0.02em; } /* 調整手機大型鈴聲按鈕高度。 */
+  .schedule-section { padding: 16px; } /* 縮小手機課表面板內距。 */
+  .schedule-form { grid-template-columns: 1fr; } /* 將手機課表欄位改為單欄。 */
+  .add-schedule-button { grid-column: auto; } /* 還原手機新增課表按鈕的欄位位置。 */
+  .schedule-row { grid-template-columns: 65px 1fr auto; gap: 8px; padding-right: 8px; padding-left: 8px; font-size: 14px; } /* 調整手機課表列欄寬及文字大小。 */
+  .lesson-times { font-size: 13px; } /* 縮小手機課表時間文字避免換行。 */
+  .pomodoro-settings { gap: 12px; } /* 縮小手機番茄鐘設定欄位間距。 */
+  .pomodoro-settings .field { width: 50%; } /* 讓兩個手機分鐘數欄位平分寬度。 */
+  .pomodoro-countdown { font-size: clamp(78px, 22vw, 120px); } /* 限制手機番茄鐘倒數字體避免溢出。 */
+  .pomodoro-actions { gap: 8px; } /* 縮小手機番茄鐘按鈕間距。 */
+  .pomodoro-actions button { min-width: 95px; padding-right: 12px; padding-left: 12px; } /* 調整手機番茄鐘按鈕尺寸。 */
+} /* 結束手機窄螢幕樣式。 */
